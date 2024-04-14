@@ -39,8 +39,8 @@ def main(dicts : dict, item_range : str):
       )
       creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open("/etc/secrets/token.json", "w") as token:
-      print()
+    #with open("/etc/secrets/token.json", "w") as token:
+      #print()
       #token.write(creds.to_json())
 
   try:
