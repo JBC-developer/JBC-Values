@@ -43,7 +43,7 @@ async def on_ready():
             channel = guild.text_channels[0]
             await channel.send('The bot has not been set up. Please use /setup and provide the channel ID of your value commands channel')
     
-    values = np.load('ValueList.npy', allow_pickle=True).item()
+    '''values = np.load('ValueList.npy', allow_pickle=True).item()
 
     k = list(values.keys())
     v = list(values.values())
@@ -53,7 +53,7 @@ async def on_ready():
     images = {}
     images = {k: img for k, img in zip(k,img)}
 
-    test.main(images)
+    test.main(images)'''
 
 
 
