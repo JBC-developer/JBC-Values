@@ -71,7 +71,7 @@ def main(dicts : dict, item_range : str):
       update_date = str(date.today())
       update_date = datetime.strptime(update_date, '%Y-%m-%d').strftime('%d/%m/%Y')
       if item_range == 'Tires & Horns!C9:K200':
-        dicts[row[0]] = ['', row[4],row[6],row[8],update_date]
+        dicts[row[0]] = ['', row[4],row[6],row[10],update_date]
         i+=1
       elif item_range == 'Hyperchromes!C10:I200':
         n_a = [18,19,28,29,38,39,48,49]
@@ -80,21 +80,21 @@ def main(dicts : dict, item_range : str):
           continue
         if i in range(10,18):
           name = str('Hyper ' + row[0] + ' level 5')
-          dicts[name] = ['', row[2],row[4],row[6],update_date]
+          dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(20,28):
           name = str('Hyper ' + row[0] + ' level 4')
-          dicts[name] = ['', row[2],row[4],row[6],update_date]
+          dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(30,38):
           name = str('Hyper ' + row[0] + ' level 3')
-          dicts[name] = ['', row[2],row[4],row[6],update_date]
+          dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(40,48):
           name = str('Hyper ' + row[0] + ' level 2')
-          dicts[name] = ['', row[2],row[4],row[6],update_date]
+          dicts[name] = ['', row[2],row[4],row[8],update_date]
         else:
-          dicts[row[0]] = ['', row[2],row[4],row[6],update_date]
+          dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
         i+=1
       else:
-        dicts[row[0]] = ['', row[2],row[4],row[6],update_date]
+        dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
         i+=1
   except HttpError as err:
     print(err)
