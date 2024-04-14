@@ -5,8 +5,10 @@ import Token
 import numpy as np
 from difflib import *
 
+from keep_alive import keep_alive
 import test
 
+keep_alive()
 bot = commands.Bot(command_prefix="?", intents= discord.Intents.all())
 
 value = np.load('ValueList.npy', allow_pickle=True).item()
