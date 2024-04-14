@@ -8,14 +8,14 @@ def main(images : dict):
     v = list(values1.values())
     values2 = {}
 
-    values2 = quickstart1.main(values2,"Textures!C9:K200")
-    values2 = quickstart1.main(values2,'Hyperchromes!C10:K200')
-    values2 = quickstart1.main(values2,"Colors!C9:K200")
-    values2 = quickstart1.main(values2,"Rims!C9:K200")
-    values2 = quickstart1.main(values2,"Spoilers!C9:K200")
-    values2 = quickstart1.main(values2,"Tires & Horns!C9:M200")
-    values2 = quickstart1.main(values2,"Furniture!C9:K200")
-    values2 = quickstart1.main(values2,"Vehicles!C9:K200")
+    values2 = quickstart1.main(values2,"Textures!C9:I200")
+    values2 = quickstart1.main(values2,'Hyperchromes!C10:I200')
+    values2 = quickstart1.main(values2,"Colors!C9:I200")
+    values2 = quickstart1.main(values2,"Rims!C9:I200")
+    values2 = quickstart1.main(values2,"Spoilers!C9:I200")
+    values2 = quickstart1.main(values2,"Tires & Horns!C9:K200")
+    values2 = quickstart1.main(values2,"Furniture!C9:I200")
+    values2 = quickstart1.main(values2,"Vehicles!C9:I200")
 
     
 
