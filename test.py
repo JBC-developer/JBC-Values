@@ -33,8 +33,8 @@ def main(images : dict):
         if ka in list(images.keys()):
             values2[ka][0] = images[ka]
     
-    for key, value in values2.items() :
-        print (("'"+ key +"'").strip(), ':', value, end=',\n')
+    #for key, value in values2.items() :
+        #print (("'"+ key +"'").strip(), ':', value, end=',\n')
 
     np.save('ValueList.npy', values2)
     
