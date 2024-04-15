@@ -24,6 +24,21 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+class MyView(discord.ui.View):
+    @discord.ui.select( # the decorator that lets you specify the properties of the select menu
+        select_type=discord.ComponentType.channel_select,
+        placeholder = "Choose a channel for the bot to work in",
+        channel_types=[discord.ChannelType.text]
+    )
+    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
+        select.disabled = True
+        channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+    
+        channel = select.values[0]
+        channel_dict[interaction.guild.id] = channel.id
+
+        np.save('Channel_Dict.npy', channel_dict)
+        await interaction.channel.send(f"The bot has been setup to work in {select.values[0].mention}")
 
 @bot.event
 async def on_ready():
@@ -41,7 +56,7 @@ async def on_ready():
     for guild in bot.guilds:
         if guild.id not in list(channel_dict.keys()):
             channel = guild.text_channels[0]
-            await channel.send('The bot has not been set up. Please use /setup and provide the channel ID of your value commands channel')
+            await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
     
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
@@ -60,11 +75,10 @@ async def on_ready():
 @bot.tree.command(name="setup")
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
-@app_commands.describe(channel_id = "The ID of the channel the bot is to be used in")
-async def setup(interaction : discord.Interaction, channel_id : str):
-    channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+async def setup(interaction : discord.Interaction):
+    await interaction.response.send_message('Thanks for using our bot! Please select a channel for it to work in - ', view = MyView())
     
-    try:
+    '''try:
         channel = bot.get_channel(int(channel_id)).name
         channel_dict[interaction.guild.id] = channel_id
 
@@ -72,7 +86,7 @@ async def setup(interaction : discord.Interaction, channel_id : str):
         await interaction.response.send_message(f'The bot has been set to work in the channel {channel}')
     except Exception as e:
         await interaction.response.send_message(f'There is no channel with that channel ID')
-        print(e)
+        print(e)'''
 
 
 
@@ -255,6 +269,6 @@ async def on_message(message):
 @bot.event
 async def on_guild_join(guild):
     channel = guild.text_channels[0]
-    await channel.send("Hello! Thank you for using the JBC value bot.\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and enter the ID of the channel you want the bot to be used in.\nUse /help for the list of commands")
+    await channel.send("Hello! Thank you for using the JBC value bot.\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
 
 bot.run(Token.TOKEN)
