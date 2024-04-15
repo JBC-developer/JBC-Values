@@ -47,17 +47,6 @@ async def on_ready():
     print("Im jbc bot")
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
 
-    try:
-        synced = await bot.tree.sync()
-        print(f'Synced {len(synced)} command(s)')
-    except Exception as e:
-        print(e)
-
-    for guild in bot.guilds:
-        if guild.id not in list(channel_dict.keys()):
-            channel = guild.text_channels[0]
-            await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
-    
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
     k = list(values.keys())
@@ -69,6 +58,17 @@ async def on_ready():
     images = {k: img for k, img in zip(k,img)}
 
     test.main(images)
+
+    try:
+        synced = await bot.tree.sync()
+        print(f'Synced {len(synced)} command(s)')
+    except Exception as e:
+        print(e)
+
+    for guild in bot.guilds:
+        if guild.id not in list(channel_dict.keys()):
+            channel = guild.text_channels[0]
+            await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
 
 
 
