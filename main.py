@@ -255,6 +255,6 @@ async def on_message(message):
 @bot.event
 async def on_guild_join(guild):
     channel = guild.text_channels[0]
-    await channel.send("Hello! Thank you for using the JBC value bot.\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
+    await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
 
 bot.run(Token.TOKEN)
