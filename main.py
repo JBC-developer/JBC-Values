@@ -24,6 +24,16 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+async def msg(guild, m):
+    l = len(guild.text_channels)
+    for i in l:
+        try:
+            channel = guild.text_channels[i]
+            await channel.send(m)
+            break
+        except:
+            continue
+
 class MyView(discord.ui.View):
     @discord.ui.select(
         cls=discord.ui.ChannelSelect,
@@ -54,8 +64,8 @@ async def on_ready():
 
     for guild in bot.guilds:
         if guild.id not in list(channel_dict.keys()):
-            channel = guild.text_channels[0]
-            await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
+            m = 'The bot has not been set up. Please use /setup and select the channel for it to work in'
+            msg(guild,m)
     
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
@@ -83,82 +93,6 @@ async def setup(interaction : discord.Interaction):
 async def setup_error(interaction :  discord.Interaction, error):
     if isinstance(error, app_commands.errors.MissingPermissions):
         await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
-
-
-'''
-@bot.tree.command(name="valuechange")
-@commands.has_permissions(administrator = True)
-@app_commands.describe(item = "The item you want to change", value = "New value", dupe_value = "Duped value", demand = "New demand")
-@app_commands.checks.has_permissions(administrator=True)
-async def valuechange(interaction : discord.Interaction, item : str, value : str, dupe_value : str, demand : str):
-
-    item = get_close_matches(item,names,1,0.4)[0]
-    channel = interaction.channel
-
-    await interaction.response.send_message(f'Do you want to change the value of {item}?')
-    
-    def check(message : discord.Message):
-        return True
-    
-    try:
-        msg = await bot.wait_for('message', check= check, timeout= 10)
-    except asyncio.TimeoutError:
-        return await channel.send("You took too long")
-
-    else:
-        m = get_close_matches(msg.content, ['yes','no'], 1, 0.6)[0]
-        if m == 'yes':
-            update_date = str(date.today())
-            update_date = datetime.strptime(update_date, '%Y-%m-%d').strftime('%d/%m/%Y')
-            values[item] = [values[item][0], value, dupe_value, demand, update_date]
-
-            names = list(values.keys())
-
-            np.save('ValueList.npy',values)
-            return await channel.send(f'Changed the value of {item} to {value}, duped value to {dupe_value} and demand to {demand}')
-
-        else:
-            return await channel.send("Try to be more accurate. If you want to add an item, use /valueadd")
-
-
-
-@bot.tree.command(name="valueadd")
-@commands.has_permissions(administrator = True)
-@app_commands.describe(item = "The item you want to add", value = "Value", dupe_value = "Duped value", demand = "Demand", image ="Link to image")
-@app_commands.checks.has_permissions(administrator=True)
-async def valueadd(interaction : discord.Interaction, item : str, value : str, dupe_value : str, demand : str, image :str):
-    try:
-        item = item.lower()
-        item = item.capitalize()
-
-        update_date = str(date.today())
-        update_date = datetime.strptime(update_date, '%Y-%m-%d').strftime('%d/%m/%Y')
-
-        values[item] = [image, value, dupe_value, demand, update_date]
-
-        names = list(values.keys())
-
-        np.save('ValueList.npy',values)
-        await interaction.response.send_message(f'Added {item} with the value {value}, duped value {dupe_value} and demand {demand}')
-    except:
-        await interaction.response.send_message('Some error')   
-
-
-
-
-@valuechange.error
-async def valuechange_error(interaction :  discord.Interaction, error):
-    if isinstance(error, app_commands.errors.MissingPermissions):
-        await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
-    #await interaction.response.send_message("No perms", ephemeral=True)
-
-
-
-@valueadd.error
-async def valueadd_error(interaction :  discord.Interaction, error):
-    if isinstance(error, app_commands.errors.MissingPermissions):
-        await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
-'''
 
 
 @bot.tree.command(name="valueupdate")
@@ -256,10 +190,11 @@ async def on_message(message):
         await message.channel.send(embed=embed, reference = message)
 
 
-
 @bot.event
 async def on_guild_join(guild):
-    channel = guild.text_channels[0]
-    await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
+    m = "Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands"
+    msg(guild, m)
+    #channel = guild.text_channels[0]
+    #await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
 
 bot.run(Token.TOKEN)
