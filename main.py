@@ -167,8 +167,8 @@ async def on_message(message):
             user_message = "crew capsule"
         if user_message.lower() == "banana":
             user_message = "banana car"
-        '''if user_message.lower() == "rtx":
-            user_message = "RTX"'''
+        if user_message.lower() == "rtx":
+            user_message = "RTx"
 
         itemlow = get_close_matches(user_message,names,1,0.4)[0]
         item = itemlow.capitalize()
