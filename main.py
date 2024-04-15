@@ -62,7 +62,7 @@ async def on_ready():
 @app_commands.checks.has_permissions(administrator=True)
 @app_commands.describe(channel_id = "The ID of the channel that the bot will work in")
 async def setup(interaction : discord.Interaction, channel_id : str):
-    np.load('Channel_Dict.npy', allow_pickle = True).item()
+    channel_dict = np.load('Channel_Dict.npy', allow_pickle = True).item()
     
     try:
         channel = bot.get_channel(int(channel_id)).name
