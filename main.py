@@ -24,15 +24,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-async def msg(guild, m):
-    l = len(guild.text_channels)
-    for i in l:
-        try:
-            channel = guild.text_channels[i]
-            await channel.send(m)
-            break
-        except:
-            continue
 
 class MyView(discord.ui.View):
     @discord.ui.select(
@@ -64,8 +55,8 @@ async def on_ready():
 
     for guild in bot.guilds:
         if guild.id not in list(channel_dict.keys()):
-            m = 'The bot has not been set up. Please use /setup and select the channel for it to work in'
-            msg(guild,m)
+            channel = guild.text_channels[0]
+            await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
     
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
@@ -192,9 +183,7 @@ async def on_message(message):
 
 @bot.event
 async def on_guild_join(guild):
-    m = "Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands"
-    msg(guild, m)
-    #channel = guild.text_channels[0]
-    #await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
+    channel = guild.text_channels[0]
+    await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
 
 bot.run(Token.TOKEN)
