@@ -247,7 +247,7 @@ async def on_message(message):
         embed.add_field(name="Duped Value", value = f"`{values[itemlow][2]}`", inline=False)
         embed.add_field(name="Demand", value = f"`{values[itemlow][3]}`", inline=False)
         embed.add_field(name="Last Updated", value = f"`{update_date}`", inline=False)
-        embed.set_footer(text= f"Powered by JBC | discord.gg/jbc")
+        #embed.set_footer(text= f"Powered by JBC | discord.gg/jbc")
         await message.channel.send(embed=embed)
 
 
