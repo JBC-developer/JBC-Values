@@ -79,16 +79,16 @@ def main(dicts : dict, item_range : str):
           i+=1
           continue
         if i in range(10,18):
-          name = str('Hyper ' + row[0] + ' level 5')
+          name = str('Hyper' + row[0] + ' Level 5')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(20,28):
-          name = str('Hyper ' + row[0] + ' level 4')
+          name = str('Hyper' + row[0] + ' Level 4')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(30,38):
-          name = str('Hyper ' + row[0] + ' level 3')
+          name = str('Hyper' + row[0] + ' Level 3')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(40,48):
-          name = str('Hyper ' + row[0] + ' level 2')
+          name = str('Hyper' + row[0] + ' Level 2')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         else:
           dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
