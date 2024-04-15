@@ -24,6 +24,20 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+class MyView(discord.ui.View):
+    @discord.ui.select(
+        cls=discord.ui.ChannelSelect,
+        placeholder = "Choose a channel for the bot to work in",
+        channel_types=[discord.ChannelType.text]
+    )
+    async def select_callback(self, interaction, select): # the function called when the user is done selecting options
+        select.disabled = True
+        channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+        channel = select.values[0]
+        channel_dict[int(interaction.guild.id)] = int(channel.id)
+
+        np.save('Channel_Dict.npy', channel_dict)
+        await interaction.response.send_message(f"The bot has been setup to work in {select.values[0]}")
 
 @bot.event
 async def on_ready():
@@ -60,19 +74,8 @@ async def on_ready():
 @bot.tree.command(name="setup")
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
-@app_commands.describe(channel_id = "The ID of the channel that the bot will work in")
-async def setup(interaction : discord.Interaction, channel_id : str):
-    channel_dict = np.load('Channel_Dict.npy', allow_pickle = True).item()
-    
-    try:
-        channel = bot.get_channel(int(channel_id)).name
-        channel_dict[interaction.guild.id] = channel_id
-
-        np.save('Channel_Dict.npy', channel_dict)
-        await interaction.response.send_message(f'The bot has been set to work in the channel {channel}')
-    except Exception as e:
-        await interaction.response.send_message(f'There is no channel with that channel ID')
-        print(e)
+async def setup(interaction : discord.Interaction):
+    await interaction.response.send_message('Thanks for using our bot! Please select a channel for it to work in - ', view = MyView())
 
 
 
@@ -208,7 +211,7 @@ async def on_message(message):
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
     if(message.guild.id not in list(channel_dict.keys())):
         return
-    if(str(message.channel.id) != channel_dict[message.guild.id]):
+    if(message.channel.id != channel_dict[message.guild.id]):
         return
 
     value = np.load('ValueList.npy', allow_pickle=True).item()
