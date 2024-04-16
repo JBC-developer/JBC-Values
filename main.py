@@ -55,9 +55,11 @@ class MyView(discord.ui.View):
         placeholder = "Choose a channel for the bot to work in",
         channel_types=[discord.ChannelType.text]
     )
+    @commands.has_permissions(administrator = True)
+    @app_commands.checks.has_permissions(administrator=True)
     async def select_callback(self, interaction, select): # the function called when the user is done selecting options
-        if !(interaction.user.guild_permissions.administrator):
-            return
+        #if !(interaction.user.guild_permissions.administrator):
+            #return
         channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
         channel = select.values[0]
         channel_dict[int(interaction.guild.id)] = int(channel.id)
