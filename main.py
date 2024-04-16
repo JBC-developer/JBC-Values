@@ -69,10 +69,10 @@ class MyView(discord.ui.View):
             embed=discord.Embed(title='The bot has been setup to work here',description = "Type the name of the item you want to know the value of", color=0x11fa00)
             channel = bot.get_channel(int(channel.id))
             await channel.send(embed = embed)
-            await interaction.response.send_message(f"The bot has been setup to work in {select.values[0]}")
+            await interaction.channel.send(f"The bot has been setup to work in {select.values[0]}")
         except:
             embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
-            await interaction.response.send_message(embed = embed)
+            await interaction.channel.send(embed = embed)
 
 @bot.event
 async def on_ready():
@@ -105,7 +105,7 @@ async def on_ready():
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
 async def setup(interaction : discord.Interaction):
-    await interaction.response.send_message('Thanks for using our bot! Please select a channel for it to work in - ', view = MyView())
+    await interaction.response.send_message('Thanks for using our bot! Please select a channel for it to work in - ', view = MyView(), ephemeral=True)
 
 
 
