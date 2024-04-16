@@ -123,7 +123,21 @@ async def ban(interaction : discord.Interaction, user_id : str):
         await interaction.response.send_message("You can't ban this person, he's too awesome", ephemeral =True)
         return
     await interaction.response.send_message("The mentioned user has been banned", ephemeral = True)
-    
+
+@bot.tree.command(name="announce", description = "Announce something to every server")
+@app_commands.describe(announcement = "The message to announce")
+async def announce(interaction : discord.Interaction, announcement : str):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
+    embed=discord.Embed(title="**Announcement!**", description=announcement)
+    channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+    for guild in bot.guilds:
+        if int(guild.id) in list(channel_dict.keys()):
+            channel = guild.get_channel(int(channel_dict[int(guild.id)]))
+            await channel.send(embed = embed)
+    await interaction.response.send_message("The message has been announced", ephemeral = True)
 
 @bot.tree.command(name="valueupdate", description = "Update values from the value list")
 @commands.has_permissions(administrator = True)
@@ -164,6 +178,34 @@ async def valueupdate_error(interaction :  discord.Interaction, error):
 
 @bot.tree.command(name="help", description = "Get help and information about the bot")
 async def help(interaction: discord.Interaction):
+    i = 0
+    for guild in bot.guilds:
+        i = i + 1
+    msg = f'''**Setting up:**
+1. Please use the command /setup
+2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
+3. Enjoy!
+(You can change the channel by using /setup command again)
+
+**Value Lists:**
+[JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
+
+**Bot Owner:**
+<@857892645543215116> `jailbreakduck | 857892645543215116`
+
+**Bot Developer:** 
+<@745583659389681675> `hydraulic4128 | 745583659389681675`
+
+**Server Count:**
+{i}
+
+**Credits:**
+[JBC](<https://discord.com/invite/jbc>)
+[Auto Creavite](<https://auto.creavite.co/>)
+
+**Other questions or concerns?**
+Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
     await interaction.response.send_message(embed = embed)
 
@@ -218,6 +260,41 @@ async def on_message(message):
         #embed.set_footer(text= f"Powered by JBC | discord.gg/jbc")
         await message.channel.send(embed=embed, reference = message)
 
+@bot.event
+async def on_guild_join(guild):
+    try:
+        owner = bot.get_user(int(guild.owner.id))
+    except:
+        owner = bot.fetch_user(int(guild.owner.id))
+    i = 0
+    for guild in bot.guilds:
+        i = i + 1
+    msg = f'''**Setting up:**
+1. Please use the command /setup
+2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
+3. Enjoy!
+(You can change the channel by using /setup command again)
 
+**Value Lists:**
+[JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
+
+**Bot Owner:**
+<@857892645543215116> `jailbreakduck | 857892645543215116`
+
+**Bot Developer:** 
+<@745583659389681675> `hydraulic4128 | 745583659389681675`
+
+**Server Count:**
+{i}
+
+**Credits:**
+[JBC](<https://discord.com/invite/jbc>)
+[Auto Creavite](<https://auto.creavite.co/>)
+
+**Other questions or concerns?**
+Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+    embed=discord.Embed(title="**Hi there!**", description=msg)
+    await owner.send(embed = embed)
 
 bot.run(Token.TOKEN)
