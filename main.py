@@ -79,6 +79,44 @@ async def on_ready():
     print("Im jbc bot")
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
 
+    i = 0
+    for guild in bot.guilds:
+        i = i + 1
+    msg = f'''**Setting up:**
+1. Please use the command /setup
+2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
+3. Enjoy!
+(You can change the channel by using /setup command again)
+
+**Value Lists:**
+[JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
+
+**Bot Owner:**
+<@857892645543215116> `jailbreakduck | 857892645543215116`
+
+**Bot Developer:** 
+<@745583659389681675> `hydraulic4128 | 745583659389681675`
+
+**Server Count:**
+{i}
+
+**Credits:**
+[JBC](<https://discord.com/invite/jbc>)
+[Auto Creavite](<https://auto.creavite.co/>)
+
+**Other questions or concerns?**
+Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+    embed=discord.Embed(title="**Hi there!**", description=msg)
+    
+    '''for guild in bot.guilds:
+        if(int(guild.id)) not in list(channel_dict.keys()):
+            try:
+                owner = bot.get_user(int(guild.owner.id))
+            except:
+                owner = bot.fetch_user(int(guild.owner.id))
+            owner.send(embed = embed)'''
+    
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
     k = list(values.keys())
@@ -135,9 +173,19 @@ async def announce(interaction : discord.Interaction, announcement : str):
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
     for guild in bot.guilds:
         if int(guild.id) in list(channel_dict.keys()):
-            channel = guild.get_channel(int(channel_dict[int(guild.id)]))
-            await channel.send(embed = embed)
+            try:
+                channel = guild.get_channel(int(channel_dict[int(guild.id)]))
+                await channel.send(embed = embed)
+            except:
+                pass
+        try:
+            owner = bot.get_user(int(guild.owner.id))
+            owner.send(embed=embed)
+        except:
+            owner = bot.fetch_user(int(guild.owner.id))
+            owner.send(embed=embed)    
     await interaction.response.send_message("The message has been announced", ephemeral = True)
+
 
 @bot.tree.command(name="valueupdate", description = "Update values from the value list")
 @commands.has_permissions(administrator = True)
