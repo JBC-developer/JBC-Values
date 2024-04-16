@@ -215,6 +215,21 @@ async def list_channels(interaction : discord.Interaction):
         await interaction.channel.send(f"{ky} : {channel_dict[ky]}")
 
 
+@bot.tree.command(name="list_servers")
+async def list_servers(interaction : discord.Interaction):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
+    await interaction.response.send_message("Creating links...")
+    for guild in bot.guilds:
+        try:
+            await link = guild.text_channels[0].create_invite(reason=f"Requested by Bot owner/developer")
+            await interaction.channel.send(link)
+        except:
+            pass
+        
+
 @bot.tree.command(name="announce", description = "Announce something to every server")
 @app_commands.describe(announcement = "The message to announce")
 async def announce(interaction : discord.Interaction, announcement : str):
