@@ -24,6 +24,29 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+msg = '''## Hi There!
+
+**Setting up:**
+1. Please use the command /setup
+2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
+3. Enjoy!
+
+**Value Lists:**
+[JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
+
+**Bot Owner:**
+<@857892645543215116> `jailbreakduck | 857892645543215116`
+
+**Bot Developer:** 
+<@745583659389681675> `hydraulic4128 | 745583659389681675`
+
+**Credits:**
+[JBC](<https://discord.com/invite/jbc>)
+[Auto Creavite](<https://auto.creavite.co/>)
+
+**Other questions or concerns?**
+Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
 
 class MyView(discord.ui.View):
     @discord.ui.select(
@@ -37,7 +60,13 @@ class MyView(discord.ui.View):
         channel_dict[int(interaction.guild.id)] = int(channel.id)
 
         np.save('Channel_Dict.npy', channel_dict)
-        await interaction.response.send_message(f"The bot has been setup to work in {select.values[0]}")
+        try:
+            embed=discord.Embed(title='The bot has been setup to work here',description = "Type the name of the item you want to know the value of", color=0x11fa00)
+            channel.send(embed = embed)
+            await interaction.response.send_message(f"The bot has been setup to work in {select.values[0]}")
+        except:
+            embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
+            channel.send(embed = embed)
 
 @bot.event
 async def on_ready():
@@ -63,15 +92,6 @@ async def on_ready():
         print(f'Synced {len(synced)} command(s)')
     except Exception as e:
         print(e)
-
-    for guild in bot.guilds:
-        if guild.id not in list(channel_dict.keys()):
-            for channel in guild.text_channels:
-                try:
-                    await channel.send('The bot has not been set up. Please use /setup and select the channel for it to work in')
-                    break
-                except:
-                    continue
 
 
 
@@ -130,7 +150,7 @@ async def valueupdate_error(interaction :  discord.Interaction, error):
 async def help(interaction: discord.Interaction):
     embed=discord.Embed(title="JBC Value Bot", description="This bot has been created for JBC by Hydraulic (`745583659389681675`)")
     embed.add_field(name="Commands :-", value="Only for administrators - \n\n/valueupdate - Updates values from the Value List\n/setup - Setup the bot\n\nFor getting a value, just type the name of the item in the value commands channel", inline=False)
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(msg)
 
 
 
@@ -184,13 +204,5 @@ async def on_message(message):
         await message.channel.send(embed=embed, reference = message)
 
 
-@bot.event
-async def on_guild_join(guild):
-    for channel in guild.text_channels:
-        try:
-            await channel.send("Hello! Thank you for using JB Value Helper!\nIt uses JBC's value list | discord.gg/jbc\nPlease set the bot up by using /setup and select the channel you want the bot to be used in.\nUse /help for the list of commands")
-            break
-        except:
-            continue
 
 bot.run(Token.TOKEN)
