@@ -30,6 +30,7 @@ msg = '''## Hi There!
 1. Please use the command /setup
 2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
 3. Enjoy!
+(You can change the channel by using /setup command again)
 
 **Value Lists:**
 [JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
@@ -55,6 +56,8 @@ class MyView(discord.ui.View):
         channel_types=[discord.ChannelType.text]
     )
     async def select_callback(self, interaction, select): # the function called when the user is done selecting options
+        if !(interaction.user.guild_permissions.administrator):
+            return
         channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
         channel = select.values[0]
         channel_dict[int(interaction.guild.id)] = int(channel.id)
