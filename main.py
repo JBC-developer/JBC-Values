@@ -224,7 +224,7 @@ async def list_servers(interaction : discord.Interaction):
     await interaction.response.send_message("Creating links...")
     for guild in bot.guilds:
         try:
-            link = guild.text_channels[0].create_invite(reason=f"Requested by Bot owner/developer")
+            link = await guild.text_channels[0].create_invite(reason=f"Requested by Bot owner/developer")
             await interaction.channel.send(link)
         except:
             pass
