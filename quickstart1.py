@@ -100,7 +100,10 @@ def main(dicts : dict, item_range : str):
             print(i)
         i+=1
       else:
-        dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
+        try:
+          dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
+        except:
+          pass
         i+=1
   except HttpError as err:
     print(err)
