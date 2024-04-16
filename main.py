@@ -197,6 +197,23 @@ async def list_ban(interaction : discord.Interaction):
     for id in list(banned.keys()):
         if banned[id]:
             await interaction.channel.send(id)
+            
+@bot.tree.command(name="list_channels")
+async def list_channels(interaction : discord.Interaction):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
+    channel_dict = np.load("Channel_Dict.npy", allow_pickle=True).item()
+    k = list(channel_dict.keys())
+    v = list(channel_dict.values())
+    try:
+        await interaction.response.send_message(file = discord.File('Channel_Dict.npy'))
+    except:
+        pass
+    for ky in k:
+        await interaction.channel.send(f"{ky} : {channel_dict[ky]}")
+
 
 @bot.tree.command(name="announce", description = "Announce something to every server")
 @app_commands.describe(announcement = "The message to announce")
