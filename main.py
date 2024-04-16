@@ -62,11 +62,12 @@ class MyView(discord.ui.View):
         np.save('Channel_Dict.npy', channel_dict)
         try:
             embed=discord.Embed(title='The bot has been setup to work here',description = "Type the name of the item you want to know the value of", color=0x11fa00)
-            channel.send(embed = embed)
+            channel = bot.get_channel(int(channel.id))
+            await channel.send(embed = embed)
             await interaction.response.send_message(f"The bot has been setup to work in {select.values[0]}")
         except:
             embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
-            channel.send(embed = embed)
+            await interaction.response.send_message(embed = embed)
 
 @bot.event
 async def on_ready():
