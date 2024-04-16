@@ -24,9 +24,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-msg = '''## Hi There!
-
-**Setting up:**
+msg = '''**Setting up:**
 1. Please use the command /setup
 2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
 3. Enjoy!
@@ -154,9 +152,8 @@ async def valueupdate_error(interaction :  discord.Interaction, error):
 
 @bot.tree.command(name="help")
 async def help(interaction: discord.Interaction):
-    embed=discord.Embed(title="JBC Value Bot", description="This bot has been created for JBC by Hydraulic (`745583659389681675`)")
-    embed.add_field(name="Commands :-", value="Only for administrators - \n\n/valueupdate - Updates values from the Value List\n/setup - Setup the bot\n\nFor getting a value, just type the name of the item in the value commands channel", inline=False)
-    await interaction.response.send_message(msg)
+    embed=discord.Embed(title="##Hi there!", description=msg)
+    await interaction.response.send_message(embed = embed)
 
 
 
