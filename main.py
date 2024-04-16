@@ -32,7 +32,7 @@ class MyView(discord.ui.View):
         channel_types=[discord.ChannelType.text]
     )
     async def select_callback(self, interaction, select): # the function called when the user is done selecting options
-        select.disabled = True
+        select.clear_items()
         channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
         channel = select.values[0]
         channel_dict[int(interaction.guild.id)] = int(channel.id)
