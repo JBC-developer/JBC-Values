@@ -78,7 +78,10 @@ def main(dicts : dict, item_range : str):
         if i in n_a:
           i+=1
           continue
-        if i in range(10,18):
+        if i == 9:
+          name = str('Hypershift')
+          dicts[name] = ['', row[2],row[4],row[8],update_date]
+        elif i in range(10,18):
           name = str('Hyper' + row[0] + ' Level 5')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         elif i in range(20,28):
@@ -91,7 +94,10 @@ def main(dicts : dict, item_range : str):
           name = str('Hyper' + row[0] + ' Level 2')
           dicts[name] = ['', row[2],row[4],row[8],update_date]
         else:
-          dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
+          try:
+            dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
+          except:
+            print(i)
         i+=1
       else:
         dicts[row[0]] = ['', row[2],row[4],row[8],update_date]
