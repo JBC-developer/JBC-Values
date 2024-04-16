@@ -99,7 +99,7 @@ async def on_ready():
 
 
 
-@bot.tree.command(name="setup")
+@bot.tree.command(name="setup", description = "Choose a channel for the bot to reply in")
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
 async def setup(interaction : discord.Interaction):
@@ -112,7 +112,7 @@ async def setup_error(interaction :  discord.Interaction, error):
     if isinstance(error, app_commands.errors.MissingPermissions):
         await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
 
-@bot.tree.command(name="ban")
+@bot.tree.command(name="ban", description = "Ban a user")
 @app_commands.describe(user_id = "The ID of the user to ban")
 async def ban(interaction : discord.Interaction, user_id : str):
     dev_id = ["745583659389681675", "857892645543215116"]
@@ -125,7 +125,7 @@ async def ban(interaction : discord.Interaction, user_id : str):
     await interaction.response.send_message("The mentioned user has been banned", ephemeral = True)
     
 
-@bot.tree.command(name="valueupdate")
+@bot.tree.command(name="valueupdate", description = "Update values from the value list")
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
 async def valueupdate(interaction : discord.Interaction):
@@ -162,7 +162,7 @@ async def valueupdate_error(interaction :  discord.Interaction, error):
 
 
 
-@bot.tree.command(name="help")
+@bot.tree.command(name="help", description = "Get help and information about the bot")
 async def help(interaction: discord.Interaction):
     embed=discord.Embed(title="**Hi there!**", description=msg)
     await interaction.response.send_message(embed = embed)
