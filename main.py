@@ -108,15 +108,21 @@ async def on_ready():
 Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
 Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
+
+    owners = []
     
     for guild in bot.guilds:
         if(int(guild.id)) not in list(channel_dict.keys()):
             try:
                 owner = bot.get_user(int(guild.owner.id))
-                await owner.send(embed = embed)
+                if owner not in owners:
+                    await owner.send(embed = embed)
+                    owners.append(owner)
             except:
                 owner = bot.fetch_user(int(guild.owner.id))
-                await owner.send(embed = embed)
+                if owner not in owners:
+                    await owner.send(embed = embed)
+                    owners.append(owner)
     
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
@@ -201,6 +207,9 @@ async def announce(interaction : discord.Interaction, announcement : str):
         return
     embed=discord.Embed(title="**Announcement!**", description=announcement)
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+
+    owners = []
+    
     for guild in bot.guilds:
         if int(guild.id) in list(channel_dict.keys()):
             try:
@@ -211,10 +220,14 @@ async def announce(interaction : discord.Interaction, announcement : str):
                 await channel.send(embed = embed)
         try:
             owner = bot.get_user(int(guild.owner.id))
-            await owner.send(embed=embed)
+            if owner not in owners:
+                await owner.send(embed=embed)
+                owners.append(owner)
         except:
             owner = bot.fetch_user(int(guild.owner.id))
-            await owner.send(embed=embed)    
+            if owner not in owners:
+                await owner.send(embed=embed)
+                owners.append(owner)
     await interaction.response.send_message("The message has been announced", ephemeral = True)
 
 
