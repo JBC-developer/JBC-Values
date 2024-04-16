@@ -109,13 +109,14 @@ Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
 Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
     
-    '''for guild in bot.guilds:
+    for guild in bot.guilds:
         if(int(guild.id)) not in list(channel_dict.keys()):
             try:
                 owner = bot.get_user(int(guild.owner.id))
+                await owner.send(embed = embed)
             except:
                 owner = bot.fetch_user(int(guild.owner.id))
-            owner.send(embed = embed)'''
+                await owner.send(embed = embed)
     
     values = np.load('ValueList.npy', allow_pickle=True).item()
 
@@ -160,7 +161,36 @@ async def ban(interaction : discord.Interaction, user_id : str):
     if (user_id in dev_id):
         await interaction.response.send_message("You can't ban this person, he's too awesome", ephemeral =True)
         return
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    banned[int(user_id)] = True
+    np.save("Banned.npy", banned)
     await interaction.response.send_message("The mentioned user has been banned", ephemeral = True)
+
+@bot.tree.command(name="unban", description = "Unban a user")
+@app_commands.describe(user_id = "The ID of the user to unban")
+async def unban(interaction : discord.Interaction, user_id : str):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.\nIf you want to appeal, please do so in our [Discord Server](<https://discord.gg/5wtYzKGn6u>)", ephemeral = True)
+        return
+    if (user_id in dev_id):
+        await interaction.response.send_message("You can't ban this person, he's too awesome to be banned in the first place.", ephemeral =True)
+        return
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    banned[int(user_id)] = False
+    np.save("Banned.npy", banned)
+    await interaction.response.send_message("The mentioned user has been unbanned", ephemeral = True)
+
+@bot.tree.command(name="list_ban", description = "List all banned users")
+async def list_ban(interaction : discord.Interaction):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    for id in list(banned.keys()):
+        if banned[id]:
+            await interaction.channel.send(id)
 
 @bot.tree.command(name="announce", description = "Announce something to every server")
 @app_commands.describe(announcement = "The message to announce")
@@ -177,13 +207,14 @@ async def announce(interaction : discord.Interaction, announcement : str):
                 channel = guild.get_channel(int(channel_dict[int(guild.id)]))
                 await channel.send(embed = embed)
             except:
-                pass
+                channel = guild.fetch_channel(int(channel_dict[int(guild.id)]))
+                await channel.send(embed = embed)
         try:
             owner = bot.get_user(int(guild.owner.id))
-            owner.send(embed=embed)
+            await owner.send(embed=embed)
         except:
             owner = bot.fetch_user(int(guild.owner.id))
-            owner.send(embed=embed)    
+            await owner.send(embed=embed)    
     await interaction.response.send_message("The message has been announced", ephemeral = True)
 
 
@@ -226,6 +257,10 @@ async def valueupdate_error(interaction :  discord.Interaction, error):
 
 @bot.tree.command(name="help", description = "Get help and information about the bot")
 async def help(interaction: discord.Interaction):
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    if interaction.user.id in list(banned.keys()):
+        if banned[interaction.user.id]:
+            return
     i = 0
     for guild in bot.guilds:
         i = i + 1
@@ -262,6 +297,10 @@ Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbP
 @bot.event
 async def on_message(message):
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    if message.author.id in list(banned.keys()):
+        if banned[message.author.id]:
+            return
     if(message.guild.id not in list(channel_dict.keys())):
         return
     if(message.channel.id != channel_dict[message.guild.id]):
@@ -310,10 +349,6 @@ async def on_message(message):
 
 @bot.event
 async def on_guild_join(guild):
-    try:
-        owner = bot.get_user(int(guild.owner.id))
-    except:
-        owner = bot.fetch_user(int(guild.owner.id))
     i = 0
     for guild in bot.guilds:
         i = i + 1
@@ -343,6 +378,11 @@ async def on_guild_join(guild):
 Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
 Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
-    await owner.send(embed = embed)
+    try:
+        owner = bot.get_user(int(guild.owner.id))
+        await owner.send(embed=embed)
+    except:
+        owner = bot.fetch_user(int(guild.owner.id))
+        await owner.send(embed = embed)
 
 bot.run(Token.TOKEN)
