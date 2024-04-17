@@ -82,31 +82,20 @@ async def on_ready():
     i = 0
     for guild in bot.guilds:
         i = i + 1
-    msg = f'''**Setting up:**
+    msg = f'''It seems that you have added our bot to your server but it has not been set up yet. Here is how to do it!
+    
+**Setting up:**
 1. Please use the command /setup
 2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
 3. Enjoy!
 (You can change the channel by using /setup command again)
 
-**Value Lists:**
-[JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
+**Note:**
+If the bot does not work, make sure it has these permissions in the specified channel -
+`View channel`, `Send messages`,`Read message history`, `Embed links`
 
-**Bot Owner:**
-<@857892645543215116> `jailbreakduck | 857892645543215116`
-
-**Bot Developer:** 
-<@745583659389681675> `hydraulic4128 | 745583659389681675`
-
-**Server Count:**
-{i}
-
-**Credits:**
-[JBC](<https://discord.com/invite/jbc>)
-[Auto Creavite](<https://auto.creavite.co/>)
-
-**Other questions or concerns?**
-Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
-Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+Kindly turn on `Create invite` for our convenience, but the bot will work without it.
+'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
 
     owners = []
@@ -315,6 +304,12 @@ async def help(interaction: discord.Interaction):
 3. Enjoy!
 (You can change the channel by using /setup command again)
 
+**Note:**
+If the bot does not work, make sure it has these permissions in the specified channel -
+`View channel`, `Send messages`,`Read message history`, `Embed links`
+
+Kindly turn on `Create invite` for our convenience, but the bot will work without it.
+
 **Value Lists:**
 [JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
 
@@ -402,6 +397,12 @@ async def on_guild_join(guild):
 2. Select the channel that you want the bot to work in. Keep in mind that it will not respond in any other channel
 3. Enjoy!
 (You can change the channel by using /setup command again)
+
+**Note:**
+If the bot does not work, make sure it has these permissions in the specified channel -
+`View channel`, `Send messages`,`Read message history`, `Embed links`
+
+Kindly turn on `Create invite` for our convenience, but the bot will work without it.
 
 **Value Lists:**
 [JBC Value List](<https://docs.google.com/spreadsheets/d/1mKz2YsgKevFvPI08XU7vCiaPBnUH9OvFzjBSO6TCvPg/edit#gid=1658217925>)
