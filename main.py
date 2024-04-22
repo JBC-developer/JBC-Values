@@ -332,9 +332,12 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
         difference_time = difference_time.total_seconds()/60
         
 
-        if ((difference_time < channel_dict[interaction.guild.id][2] and int(difference_date) == 0) or not (difference_date > 0)):
-            await interaction.response.send_message(f"The server is on cooldown for {int(channel_dict[interaction.guild.id][2] - difference_time)} minutes", ephemeral=True)
-            return
+        if ((int(difference_time) < int(channel_dict[interaction.guild.id][2]) and int(difference_date) == 0)):
+            if (int(difference_date) > 0):
+                pass
+            else:
+                await interaction.response.send_message(f"The server is on cooldown for {int(channel_dict[interaction.guild.id][2] - difference_time)} minutes", ephemeral=True)
+                return
     if (validators.url(server_link) and "https://www.roblox.com/" in server_link) or (server_link == ''):
         cooldown[id] = ['','']
         cooldown[id][0] = current_time
