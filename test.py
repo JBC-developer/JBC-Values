@@ -13,7 +13,7 @@ def main(images : dict):
     values2 = quickstart1.main(values2,"Colors!C9:K200")
     values2 = quickstart1.main(values2,"Rims!C9:K200")
     values2 = quickstart1.main(values2,"Spoilers!C9:K200")
-    values2 = quickstart1.main(values2,"Tires & Horns!C9:M200")
+    values2 = quickstart1.main(values2,"Tires & Horns [WIP]!C9:M200")
     values2 = quickstart1.main(values2,"Furniture!C9:K200")
     values2 = quickstart1.main(values2,"Vehicles!C9:K200")
 
