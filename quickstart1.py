@@ -71,7 +71,10 @@ def main(dicts : dict, item_range : str):
       update_date = str(date.today())
       update_date = datetime.strptime(update_date, '%Y-%m-%d').strftime('%d/%m/%Y')
       if item_range == 'Tires & Horns!C9:M200':
-        dicts[row[0]] = ['', row[4],row[6],row[10],update_date]
+        try:
+          dicts[row[0]] = ['', row[4],row[6],row[10],update_date]
+        except:
+          print(i)
         i+=1
       elif item_range == 'Hyperchromes!C10:K200':
         n_a = [18,19,28,29,38,39,48,49]
