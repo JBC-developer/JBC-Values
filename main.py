@@ -304,6 +304,9 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
     if interaction.guild.id not in list(channel_dict.keys()):
         await interaction.response.send_message('The grinding bot has not been setup yet. Please ask a server admin to set it up', ephemeral=True)
         return
+
+    if channel_dict[interaction.guild.id][0] != interaction.channel_id:
+        return
     
     if server_link == '' and server_type == "Private":
         await interaction.response.send_message('You have to specify a link if playing on a private server.', ephemeral=True)
