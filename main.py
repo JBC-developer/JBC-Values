@@ -10,6 +10,9 @@ from datetime import date
 import validators
 
 import test
+from keep_alive import keep_alive
+
+keep_alive()
 
 bot = commands.Bot(command_prefix="?", intents= discord.Intents.all())
 
