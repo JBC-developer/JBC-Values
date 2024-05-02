@@ -126,6 +126,8 @@ class MyView1(discord.ui.View):
         except:
             embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Read message history`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
             await interaction.channel.send(embed = embed)
+        user = await bot.fetch_user(745583659389681675)
+        await user.send(file = discord.File('Channel_Dict.npy'))
 
 class MyView3(discord.ui.View):
     @discord.ui.select(
@@ -178,6 +180,8 @@ class MyView4(discord.ui.View):
         await interaction.message.delete()
         embed = discord.Embed(title="**Success!**", description=f"The bot has been setup to work in {bot.get_channel(channel_dict[int(interaction.guild.id)][0])}, with grinding ping <@&{channel_dict[int(interaction.guild.id)][1]}> and cooldown {channel_dict[int(interaction.guild.id)][2]} minutes", color=0x00ff00)
         await interaction.channel.send(embed=embed)
+        user = await bot.fetch_user(745583659389681675)
+        await user.send(file = discord.File('Channel_Dict_grind.npy'))
 
 @bot.event
 async def on_ready():
