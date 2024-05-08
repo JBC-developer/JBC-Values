@@ -637,8 +637,6 @@ async def on_message(message):
             user_message = "crew capsule"
         if user_message.lower() == "banana":
             user_message = "banana car"
-        if user_message.lower() == "rtx":
-            user_message = "RTx"
         if user_message.lower() == "jav":
             user_message = "javelin"
         if user_message.lower() == "arach":
