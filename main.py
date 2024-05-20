@@ -300,8 +300,9 @@ async def suggest_dupe(interaction : discord.Interaction, item : str, owner : st
     if interaction.user.id in list(banned.keys()):
         if banned[interaction.user.id]:
             return
+    await interaction.response.send_message('Processing...')
     if not validators.url(proof):
-        await interaction.response.send_message('Invalid link', ephemeral=True)
+        await interaction.edit_original_response('Invalid link', ephemeral=True)
         return
     try:
         urllib.request.urlretrieve(proof, 'file')
@@ -317,7 +318,7 @@ async def suggest_dupe(interaction : discord.Interaction, item : str, owner : st
 **Owner : **{owner}
 **Suggested by : **{interaction.user.name}'''
 
-    await interaction.response.send_message('Suggestion posted.', ephemeral=True)
+    await interaction.edit_original_response('Suggestion posted. Remember, if it was a troll of any sort, you might be banned.')
     embed = discord.Embed(title="**Dupe suggestion**", description=m, color=0x00ff00)
     embed.set_image(url=proof)
     msg = await channel.send(embed = embed)
