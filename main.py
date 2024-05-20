@@ -8,6 +8,10 @@ import typing
 from datetime import datetime
 from datetime import date
 import validators
+from github import Github
+from github import Auth
+import urllib.request 
+from PIL import Image
 
 import test
 from keep_alive import keep_alive
@@ -91,6 +95,7 @@ class MyView2(discord.ui.View):
             print(e)
 
         np.save('Channel_Dict_grind.npy', channel_dict)
+        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         try:
             await interaction.response.defer()
             await interaction.message.delete()
@@ -117,6 +122,7 @@ class MyView1(discord.ui.View):
         channel_dict[int(interaction.guild.id)] = int(channel.id)
 
         np.save('Channel_Dict.npy', channel_dict)
+        update_file('Channel_Dict.npy', 'JBC-Values')
         try:
             await interaction.response.defer()
             embed=discord.Embed(title='The bot has been setup to work here',description = "Type the name of the item you want to know the value of", color=0x11fa00)
@@ -146,6 +152,7 @@ class MyView3(discord.ui.View):
             print(e)
         
         np.save('Channel_Dict_grind.npy', channel_dict)
+        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         await interaction.response.defer()
         await interaction.message.delete()
         #await interaction.channel.send(f"The bot has been setup to work with the role <@&{select.values[0].id}>")
@@ -176,12 +183,29 @@ class MyView4(discord.ui.View):
             print(e)
         
         np.save('Channel_Dict_grind.npy', channel_dict)
+        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         await interaction.response.defer()
         await interaction.message.delete()
         embed = discord.Embed(title="**Success!**", description=f"The bot has been setup to work in {bot.get_channel(channel_dict[int(interaction.guild.id)][0])}, with grinding ping <@&{channel_dict[int(interaction.guild.id)][1]}> and cooldown {channel_dict[int(interaction.guild.id)][2]} minutes", color=0x00ff00)
         await interaction.channel.send(embed=embed)
         user = await bot.fetch_user(745583659389681675)
         await user.send(file = discord.File('Channel_Dict_grind.npy'))
+
+def update_file(file_name, repo_name):
+    auth = Auth.Token(Token.GIT_TOKEN)
+
+    gh = Github(auth=auth)
+    user = gh.get_user()
+    repo = user.get_repo(repo_name)
+    file = repo.get_contents(file_name)
+
+    with open(file_name, 'rb') as file1:
+        content = file1.read()
+    try:
+        repo.update_file(file_name, "Commit Comments", content, file.sha)
+    except Exception as e:
+        print(e)
+        print('not successful')
 
 @bot.event
 async def on_ready():
@@ -269,6 +293,60 @@ async def setup_value_bot_error(interaction :  discord.Interaction, error):
     if isinstance(error, app_commands.errors.MissingPermissions):
         await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
 
+@bot.tree.command(name="suggest_dupe", description = "Suggest adding a duped item to the list")
+@app_commands.describe(item = "Name of duped item", owner = "Owner of the duped item", proof = "A link to the proof")
+async def suggest_dupe(interaction : discord.Interaction, item : str, owner : str, proof : str):
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    if interaction.user.id in list(banned.keys()):
+        if banned[interaction.user.id]:
+            return
+    if not validators.url(proof):
+        await interaction.response.send_message('Invalid link', ephemeral=True)
+        return
+    try:
+        urllib.request.urlretrieve(proof, 'file')
+        img = Image.open(r"file")
+        img.show()
+    except:
+        await interaction.channel.send('Invalid link')
+        return
+    
+    channel = await bot.fetch_channel(1237738711417094224)
+    
+    m = f'''**Item : **{item}
+**Owner : **{owner}
+**Suggested by : **{interaction.user.name}'''
+
+    await interaction.response.send_message('Suggestion posted.', ephemeral=True)
+    embed = discord.Embed(title="**Dupe suggestion**", description=m, color=0x00ff00)
+    embed.set_image(url=proof)
+    msg = await channel.send(embed = embed)
+    await msg.add_reaction("👍")
+    await msg.add_reaction("👎")
+
+@bot.tree.command(name="dupe_check", description="Check if a user has ever duped")
+@app_commands.describe(username="Enter roblox username")
+async def dupe_check(interaction : discord.Interaction, username : str):
+    dupe_list = np.load("dupe.npy", allow_pickle=True).item()
+    duped_items = []
+    for item in list(dupe_list.keys()):
+        for user in dupe_list[item]:
+            if user.lower() == username.lower():
+                duped_items.append(item)
+    if len(duped_items) == 0:
+        await interaction.response.send_message(f"Clean! {username} has never duped")
+    else:
+        m = f"{username} has duped these items - "
+        i = 1
+        for item in duped_items:
+            if i == len(duped_items):
+                m = m + f"{item}"
+            else:
+                m = m + f"{item}, "
+            i+=1
+        await interaction.response.send_message(m)
+
+
 @bot.tree.command(name="reset_grinding_cooldown", description = "Reset cooldown for the server")
 @commands.has_permissions(administrator = True)
 @app_commands.checks.has_permissions(administrator=True)
@@ -277,6 +355,7 @@ async def reset_grinding_cooldown(interaction : discord.Interaction):
     id = int(interaction.guild.id)
     del cooldown[id]
     np.save('cooldown.npy', cooldown)
+    update_file('cooldown.npy', 'JBC-Values')
     await interaction.response.send_message('Cooldown reset', ephemeral=True)
 
 @reset_grinding_cooldown.error
@@ -347,6 +426,7 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
         cooldown[id][0] = current_time
         cooldown[id][1] = current_date
         np.save("cooldown.npy", cooldown)
+        update_file('cooldown.npy', 'JBC-Values')
 
         #server_link = "https://www.roblox.com/games/606849621/Jailbreak-Saturday?privateServerLinkCode=35811044437989989744211517148641"
 
@@ -409,6 +489,7 @@ async def ban(interaction : discord.Interaction, user_id : str):
     banned = np.load("Banned.npy", allow_pickle=True).item()
     banned[int(user_id)] = True
     np.save("Banned.npy", banned)
+    update_file('Banned.npy', 'JBC-Values')
     await interaction.response.send_message("The mentioned user has been banned", ephemeral = True)
 
 @bot.tree.command(name="unban", description = "Unban a user")
@@ -424,6 +505,7 @@ async def unban(interaction : discord.Interaction, user_id : str):
     banned = np.load("Banned.npy", allow_pickle=True).item()
     banned[int(user_id)] = False
     np.save("Banned.npy", banned)
+    update_file('Banned.npy', 'JBC-Values')
     await interaction.response.send_message("The mentioned user has been unbanned", ephemeral = True)
 
 @bot.tree.command(name="list_ban", description = "List all banned users")
