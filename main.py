@@ -95,7 +95,6 @@ class MyView2(discord.ui.View):
             print(e)
 
         np.save('Channel_Dict_grind.npy', channel_dict)
-        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         try:
             await interaction.response.defer()
             await interaction.message.delete()
@@ -104,9 +103,11 @@ class MyView2(discord.ui.View):
             await channel.send(embed = embed)
             #await interaction.channel.send(f"The bot has been setup to work in {select.values[0]}")
             await interaction.channel.send("Please select the Grinding ping role - ", view=MyView3())
+            update_file('Channel_Dict_grind.npy', 'JBC-Values')
         except:
             embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
             await interaction.channel.send(embed = embed)
+            update_file('Channel_Dict_grind.npy', 'JBC-Values')
 
 class MyView1(discord.ui.View):
     @discord.ui.select(
@@ -122,16 +123,17 @@ class MyView1(discord.ui.View):
         channel_dict[int(interaction.guild.id)] = int(channel.id)
 
         np.save('Channel_Dict.npy', channel_dict)
-        update_file('Channel_Dict.npy', 'JBC-Values')
         try:
             await interaction.response.defer()
             embed=discord.Embed(title='The bot has been setup to work here',description = "Type the name of the item you want to know the value of", color=0x11fa00)
             channel = bot.get_channel(int(channel.id))
             await channel.send(embed = embed)
             await interaction.channel.send(f"The bot has been setup to work in {select.values[0]}")
+            update_file('Channel_Dict.npy', 'JBC-Values')
         except:
             embed=discord.Embed(title='**Important**',description = f"The bot has been setup to work in {select.values[0]}, but it cannot function right now\nPlease check the permissions of the bot in the {select.values[0]} channel\nMake sure it has these permissions:\n`Send Messages`, `Read message history`, `Embed links` and `Attach files`\nThe bot will not work until it has these permissions", color=0xff0000)
             await interaction.channel.send(embed = embed)
+            update_file('Channel_Dict.npy', 'JBC-Values')
         user = await bot.fetch_user(745583659389681675)
         await user.send(file = discord.File('Channel_Dict.npy'))
 
@@ -152,8 +154,8 @@ class MyView3(discord.ui.View):
             print(e)
         
         np.save('Channel_Dict_grind.npy', channel_dict)
-        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         await interaction.response.defer()
+        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         await interaction.message.delete()
         #await interaction.channel.send(f"The bot has been setup to work with the role <@&{select.values[0].id}>")
         await interaction.channel.send("Please select the cooldown for /grind (in minutes) - ", view=MyView4())
@@ -183,9 +185,9 @@ class MyView4(discord.ui.View):
             print(e)
         
         np.save('Channel_Dict_grind.npy', channel_dict)
-        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         await interaction.response.defer()
         await interaction.message.delete()
+        update_file('Channel_Dict_grind.npy', 'JBC-Values')
         embed = discord.Embed(title="**Success!**", description=f"The bot has been setup to work in {bot.get_channel(channel_dict[int(interaction.guild.id)][0])}, with grinding ping <@&{channel_dict[int(interaction.guild.id)][1]}> and cooldown {channel_dict[int(interaction.guild.id)][2]} minutes", color=0x00ff00)
         await interaction.channel.send(embed=embed)
         user = await bot.fetch_user(745583659389681675)
