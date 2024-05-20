@@ -302,7 +302,7 @@ async def suggest_dupe(interaction : discord.Interaction, item : str, owner : st
             return
     await interaction.response.send_message('Processing...')
     if not validators.url(proof):
-        await interaction.edit_original_response('Invalid link', ephemeral=True)
+        await interaction.edit_original_response('Invalid link')
         return
     try:
         urllib.request.urlretrieve(proof, 'file')
