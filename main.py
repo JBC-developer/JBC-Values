@@ -646,6 +646,8 @@ async def help(interaction: discord.Interaction):
 /setup_value_bot - Setup the value bot
 /setup_grinding_bot - Setup the grinding bot
 /grind - Generate a ping for players to grind with you!
+/dupe_check - Checks for dupes
+/suggest_dupe - Suggest to a duped item to the list
 
 **Setting up VALUE BOT:**
 1. Make a channel for the value bot
@@ -826,7 +828,7 @@ Privacy Policy can be accessed [here](<https://docs.google.com/document/d/1mwnJb
         owner = bot.get_user(int(guild.owner.id))
         await owner.send(embed=embed)
     except:
-        owner = bot.fetch_user(int(guild.owner.id))
+        owner = await bot.fetch_user(int(guild.owner.id))
         await owner.send(embed = embed)
 
 bot.run(Token.TOKEN)
