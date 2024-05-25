@@ -268,7 +268,15 @@ Kindly turn on `Create invite` for our convenience, but the bot will work withou
     except Exception as e:
         print(e)
 
-
+@bot.tree.command(name="change_status")
+@app_commands.describe(status="Enter status")
+async def change_status(interaction : discord.Interaction, status : str):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
+    await bot.change_presence(activity=discord.CustomActivity(name=status))
+    await interaction.response.send_message("Changed status", ephemeral=True)
 
 @bot.tree.command(name="setup_value_bot", description = "Choose a channel for the value bot to reply in")
 @commands.has_permissions(administrator = True)
