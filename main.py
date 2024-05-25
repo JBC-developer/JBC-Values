@@ -73,7 +73,8 @@ INSERT HERE
 
 **Other questions or concerns?**
 Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
-Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)
+Privacy Policy can be accessed [here](<https://docs.google.com/document/d/1mwnJbnqa381AaxcYvf50g-63Jq4Zo5Y5igPzRamG8_A/edit>)'''
 
 class MyView2(discord.ui.View):
     @discord.ui.select(
@@ -686,7 +687,8 @@ Kindly turn on `Create invite` for our convenience, but the bot will work withou
 
 **Other questions or concerns?**
 Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
-Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)
+Privacy Policy can be accessed [here](<https://docs.google.com/document/d/1mwnJbnqa381AaxcYvf50g-63Jq4Zo5Y5igPzRamG8_A/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
     await interaction.response.send_message(embed = embed)
 
@@ -817,7 +819,8 @@ Kindly turn on `Create invite` for our convenience, but the bot will work withou
 
 **Other questions or concerns?**
 Join our [Support & Development Server](<https://discord.gg/5wtYzKGn6u>)
-Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)'''
+Terms of Service can be accessed [here](<https://docs.google.com/document/d/1AbPgAUexIxxN6qIX5QOjK3TiWVF4_FR-62d1zoQOFIQ/edit>)
+Privacy Policy can be accessed [here](<https://docs.google.com/document/d/1mwnJbnqa381AaxcYvf50g-63Jq4Zo5Y5igPzRamG8_A/edit>)'''
     embed=discord.Embed(title="**Hi there!**", description=msg)
     try:
         owner = bot.get_user(int(guild.owner.id))
