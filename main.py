@@ -18,7 +18,10 @@ from keep_alive import keep_alive
 
 keep_alive()
 
-bot = commands.Bot(command_prefix="?", intents= discord.Intents.all())
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="?", intents= intents)
 
 value = np.load('ValueList.npy', allow_pickle=True).item()
 k = list(value.keys())
