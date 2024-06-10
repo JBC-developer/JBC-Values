@@ -405,7 +405,7 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
 
     if channel_dict[interaction.guild.id][0] != interaction.channel_id:
         return
-    
+                                            
     if server_link == '' and server_type == "Private":
         await interaction.response.send_message('You have to specify a link if playing on a private server.', ephemeral=True)
         return
@@ -418,7 +418,7 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
     current_date = date.today()
 
     id = int(interaction.guild.id)
-
+    
     cooldown = np.load("cooldown.npy", allow_pickle=True).item()
     if id in list(cooldown.keys()):
         prev_time = cooldown[id][0]
@@ -436,14 +436,13 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
             else:
                 await interaction.response.send_message(f"The server is on cooldown for {int(channel_dict[interaction.guild.id][2] - difference_time)} minutes", ephemeral=True)
                 return
+    await interaction.response.send_message('Processing...")
     if (validators.url(server_link) and "https://www.roblox.com/" in server_link) or (server_link == ''):
         cooldown[id] = ['','']
         cooldown[id][0] = current_time
         cooldown[id][1] = current_date
         np.save("cooldown.npy", cooldown)
         update_file('cooldown.npy', 'JBC-Values')
-
-        #server_link = "https://www.roblox.com/games/606849621/Jailbreak-Saturday?privateServerLinkCode=35811044437989989744211517148641"
 
         
         m = f'''**Host:** <@{interaction.user.id}>
@@ -477,16 +476,16 @@ async def grind(interaction : discord.Interaction, amount_of_people : typing.Lit
         view.add_item(button)
 
         if server_type == "Private":
-            await interaction.response.send_message(embed=embed, view=view)
+            await interaction.edit_original_response(content = '', embed=embed, view=view)
         else:
-            await interaction.response.send_message(embed=embed)
+            await interaction.edit_original_response(content = '', embed=embed)
         role = channel_dict[interaction.guild.id][1]
         try:
             await interaction.channel.send(f"<@&{role}>")
         except:
             await interaction.channel.send('The bot could not ping due to missing permissions.')
     else:
-        await interaction.response.send_message("There is a problem with the link. Make sure it works and starts with 'https://'", ephemeral=True)
+        await interaction.edit_original_response(content= "There is a problem with the link. Make sure it works and starts with 'https://'")
 
 
 
