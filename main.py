@@ -649,7 +649,7 @@ async def help(interaction: discord.Interaction):
 /setup_grinding_bot - Setup the grinding bot
 /grind - Generate a ping for players to grind with you!
 /dupe_check - Checks for dupes
-/suggest_dupe - Suggest to a duped item to the list
+/suggest_dupe - Suggest to add a duped item to the list
 
 **Setting up VALUE BOT:**
 1. Make a channel for the value bot
