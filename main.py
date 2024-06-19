@@ -549,7 +549,7 @@ async def list_channels(interaction : discord.Interaction):
         pass
 
 
-@bot.tree.command(name="list_servers")
+'''@bot.tree.command(name="list_servers")
 async def list_servers(interaction : discord.Interaction):
     dev_id = ["745583659389681675", "857892645543215116"]
     if (str(interaction.user.id) not in dev_id):
@@ -561,7 +561,7 @@ async def list_servers(interaction : discord.Interaction):
             link = await guild.text_channels[0].create_invite(reason=f"Requested by Bot owner/developer")
             await interaction.channel.send(link)
         except:
-            pass
+            pass'''
         
 
 @bot.tree.command(name="announce", description = "Announce something to every server")
