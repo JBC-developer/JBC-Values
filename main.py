@@ -598,9 +598,11 @@ async def announce(interaction : discord.Interaction, announcement : str):
 
 
 @bot.tree.command(name="valueupdate", description = "Update values from the value list")
-@commands.has_permissions(administrator = True)
-@app_commands.checks.has_permissions(administrator=True)
 async def valueupdate(interaction : discord.Interaction):
+    dev_id = ["745583659389681675", "857892645543215116"]
+    if (str(interaction.user.id) not in dev_id):
+        await interaction.response.send_message("This command is only for the Bot owner and Bot developer.", ephemeral = True)
+        return
     await interaction.response.send_message('Updating Values...')
     try:
         values = np.load('ValueList.npy', allow_pickle=True).item()
