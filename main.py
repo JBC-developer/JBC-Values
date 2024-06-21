@@ -220,6 +220,12 @@ async def on_ready():
     print("Im jbc bot")
     channel_dict = dict(np.load('Channel_Dict.npy', allow_pickle=True).item())
 
+    try:
+        synced = await bot.tree.sync()
+        print(f'Synced {len(synced)} command(s)')
+    except Exception as e:
+        print(e)
+        
     i = 0
     for guild in bot.guilds:
         i = i + 1
@@ -265,12 +271,7 @@ Kindly turn on `Create invite` for our convenience, but the bot will work withou
     images = {k: img for k, img in zip(k,img)}
 
     test.main(images)
-
-    try:
-        synced = await bot.tree.sync()
-        print(f'Synced {len(synced)} command(s)')
-    except Exception as e:
-        print(e)
+    
 
 @bot.tree.command(name="change_status")
 @app_commands.describe(status="Enter status")
