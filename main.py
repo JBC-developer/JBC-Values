@@ -577,23 +577,22 @@ async def announce(interaction : discord.Interaction, announcement : str):
     owners = []
     await interaction.response.send_message("Announcing...", ephemeral = True)
     for guild in bot.guilds:
-        if int(guild.id) in list(channel_dict.keys()):
-            try:
-                channel = guild.get_channel(int(channel_dict[int(guild.id)]))
-                await channel.send(embed = embed)
-            except:
-                channel = guild.fetch_channel(int(channel_dict[int(guild.id)]))
-                await channel.send(embed = embed)
         try:
-            owner = bot.get_user(int(guild.owner.id))
+            if int(guild.id) in list(channel_dict.keys()):
+                try:
+                    channel = await guild.fetch_channel(int(channel_dict[int(guild.id)]))
+                    await channel.send(embed = embed)
+                except:
+                    pass
+        except:
+            pass
+        try:
+            owner = await bot.fetch_user(int(guild.owner.id))
             if owner not in owners:
                 await owner.send(embed=embed)
                 owners.append(owner)
         except:
-            owner = bot.fetch_user(int(guild.owner.id))
-            if owner not in owners:
-                await owner.send(embed=embed)
-                owners.append(owner)
+            pass
     await interaction.edit_original_response(content="The message has been announced")
 
 
