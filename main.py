@@ -307,6 +307,25 @@ async def setup_value_bot_error(interaction :  discord.Interaction, error):
     if isinstance(error, app_commands.errors.MissingPermissions):
         await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
 
+@bot.tree.command(name="private_servers", description = "Get a list of private servers to play on!")
+async def private_servers(interaction : discord.Interaction):
+    banned = np.load("Banned.npy", allow_pickle=True).item()
+    if interaction.user.id in list(banned.keys()):
+        if banned[interaction.user.id]:
+            return
+    m = '''## Private Servers
+[Server 1](https://www.roblox.com/share?code=01c733380ea4a0498e1751a7a29ddf6d&type=Server) | Owner: <@857892645543215116>
+
+[Server 2](https://www.roblox.com/share?code=c476e86229407b4c8b465b2c11a6547c&type=Server) | Owner: <@909812807539769354>
+
+[Server 3](https://www.roblox.com/share?code=f9b83a95976d9a4998332dee8f40f1c9&type=Server) | Owner: <@898478890568286229>
+
+[Server 4](https://www.roblox.com/share?code=ba1e6272966ad349a699df023cabcdcd&type=Server) | Owner: <@970081343163756624>
+
+Dm <@857892645543215116> to add your private server here!'''
+    embed = discord.Embed(description = m, color = 0x00ff00)
+    await interaction.response.send_message(embed=embed)
+
 @bot.tree.command(name="suggest_dupe", description = "Suggest adding a duped item to the list")
 @app_commands.describe(item = "Name of duped item", owner = "Owner of the duped item", proof = "A link to the proof")
 async def suggest_dupe(interaction : discord.Interaction, item : str, owner : str, proof : str):
