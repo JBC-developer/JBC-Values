@@ -642,16 +642,10 @@ async def valueupdate(interaction : discord.Interaction):
         
         return await interaction.channel.send('Values updated')
     except Exception as e:
-        print(e)
+        user = await bot.fetch_user(745583659389681675)
+        await user.send(e)
         return await interaction.channel.send("I wasn't able to update the values")
     
-
-
-@valueupdate.error
-async def valueupdate_error(interaction :  discord.Interaction, error):
-    if isinstance(error, app_commands.errors.MissingPermissions):
-        await interaction.response.send_message("You have no permissions to run this command", ephemeral=True)
-    #await interaction.response.send_message("No perms", ephemeral=True)
 
 
 
