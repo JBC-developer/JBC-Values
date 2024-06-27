@@ -65,6 +65,7 @@ def main(dicts : dict, item_range : str):
     n_a = [68,69,70,121,122,123,184,185,186,246,247,248,268,269,270]
     og_dict = np.load('ValueList.npy',allow_pickle=True).item()
     for row in values:
+     try:
       # Print columns A and E, which correspond to indices 0 and 4.
       update_date = str(date.today())
       update_date = datetime.strptime(update_date, '%Y-%m-%d').strftime('%d/%m/%Y')
@@ -108,6 +109,8 @@ def main(dicts : dict, item_range : str):
             print(e)
             print(i)
         i+=1
+     except:
+       pass
   except HttpError as err:
     print(err)
   
