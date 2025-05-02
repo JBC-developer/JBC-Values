@@ -43,6 +43,6 @@ def main(images : dict):
         if value[0] == '':
             print (("'"+ key +"'").strip(), ':', value, end=',\n')
     values1['torpedo'][0] = 'https://static.wikia.nocookie.net/rblx-jailbreak/images/4/40/Torpedo.png/revision/latest/scale-to-width-down/1000?cb=20220219030137.png'
-    values1['molten m12'][0] = 'https://static.wikia.nocookie.net/rblx-jailbreak/images/3/37/MoltenHD.png/revision/latest?cb=20220211222718.png'
+    #values1['molten m12'][0] = 'https://static.wikia.nocookie.net/rblx-jailbreak/images/3/37/MoltenHD.png/revision/latest?cb=20220211222718.png'
 
     np.save('ValueList.npy', values1)
