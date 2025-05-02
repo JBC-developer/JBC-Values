@@ -767,8 +767,8 @@ async def on_message(message):
             user_message = "airtail"
         if user_message.lower() == "volt":
             user_message = "volt bike"
-        if user_message.lower() == "molten m12":
-            user_message = "m12"
+        if user_message.lower() == "m12":
+            user_message = "molten m12"
         
         for color in ['red','blue','green','purple', 'diamond', 'orange', 'pink', 'yellow']:
             if color in user_message.lower():
